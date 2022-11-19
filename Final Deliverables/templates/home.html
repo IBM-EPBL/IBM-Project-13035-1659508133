@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/home.css">
+    <script src="https://kit.fontawesome.com/514548070d.js" crossorigin="anonymous"></script>
+{#    <script src="../static/script.js"></script>#}
+    <title>Personal Expense Tracker</title>
+</head>
+<body>
+<div class="track-home">
+    <div class="track-left">
+        <div class="track-avatar">
+            <img class="avatar" src="../static/avatar.png" alt="avatar">
+            <span>{{ name }}</span>
+        </div>
+        <hr class="solid-line">
+        <div class="track-items">
+            <div>
+                <i class="fa-solid fa-folder"></i>
+                <span>Dashboard</span>
+            </div>
+            <div>
+                <i class="fa-solid fa-chart-simple"></i>
+                <span>Statistics</span>
+            </div>
+            <div>
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </div>
+            <div onclick="window.location.href='{{ url_for("logout") }}'">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="track-right">
+        <div class="track-right__top">
+            <div class="track-right__top__types">
+                <i class="fa-solid fa-bed fa-2x"></i>
+                <span class="track-type__amount">₹{{ expenses["Medical Expenses"] }}</span>
+                <span>Medical Expenses</span>
+            </div>
+            <div class="track-right__top__types">
+                <i class="fa-solid fa-house fa-2x"></i>
+                <span class="track-type__amount">₹{{ expenses["House Expenses"] }}</span>
+                <span>House Expenses</span>
+            </div>
+            <div class="track-right__top__types">
+                <i class="fa-solid fa-graduation-cap fa-2x"></i>
+                <span class="track-type__amount">₹{{ expenses["Education"] }}</span>
+                <span>Education</span>
+            </div>
+            <div class="track-right__top__types">
+                <i class="fa-solid fa-piggy-bank fa-2x"></i>
+                <span class="track-type__amount">₹{{ expenses["Savings"] }}</span>
+                <span>Savings</span>
+            </div>
+            <div class="track-right__top__types">
+                <i class="fa-solid fa-money-check-dollar fa-2x"></i>
+                <span class="track-type__amount">₹{{ expenses["Others"] }}</span>
+                <span>Others</span>
+            </div>
+        </div>
+        <div class="track-right__bottom">
+            <div class="track-transactions">
+            <h3>Recent Transactions</h3>
+                {% if data|length == 0 %}
+                    <div class="empty-transact">No Transactions Available...</div>
+                {% else %}
+                <div class="transact-header">
+                    <span class="date-header"><b>Date</b></span>
+                    <span class="transaction-header"><b>Transaction</b></span>
+                    <span class="type-header"><b>Type</b></span>
+                    <span class="amount-header"><b>Amount</b></span>
+                </div>
+            <div class="total-items">
+                {% for val in data %}
+                <div class="transact-item">
+                    <span class="date-header">{{ val.DATE }}</span>
+                    <span class="transaction-header">{{ val.TRANSACTION }}</span>
+                    <div class="type-header">{{ val.TYPE }}</div>
+                    <span class="amount-header">₹{{ val.AMOUNT }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            </div>
+            <div class="track-add">
+                <h3>Add Expenditure</h3>
+                <form action="/add-expenditure" method="post">
+                    <div class="expenditure-input">
+                        <input name="transaction" placeholder="Transaction" type="text">
+                    </div>
+                    <div class="expenditure-input">
+                        <input name="type" placeholder="Transaction Type" type="text" list="trans-type">
+                        <datalist id="trans-type">
+                            <option value="Medical Expenses">
+                            <option value="House Expenses">
+                            <option value="Education" >
+                            <option value="Savings" >
+                            <option value="Others" >
+                        </datalist>
+                    </div>
+                    <div class="expenditure-input">
+                        <input name="amount" placeholder="Amount" type="number" min="0">
+                    </div>
+                    <div class="expenditure-input">
+                        <input name="date" placeholder="Date" type="date">
+                    </div>
+                    <button type="submit" class="btn-submit">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
